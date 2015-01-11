@@ -1,16 +1,13 @@
 package com.cheesecake.articles;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Pedro Henrique on 10/01/2015.
@@ -35,12 +32,12 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
     /**
      * Adapter constructor.
      * @param context Object containing the current state of the MainActivity state.
-     * @param articles List of objects of type article.
+     * @param articleModels List of objects of type article.
      */
-    public ArticlesAdapter(Context context, ArrayList<Article> articles) {
+    public ArticlesAdapter(Context context, ArrayList<Article> articleModels) {
         super(context, R.layout.article_line);
         this.context = context;
-        this.articles = articles;
+        this.articles = articleModels;
     }
 
 
@@ -48,8 +45,8 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
      * Method to get the view that will display the data in an specified position.
      * @param position Index of the row.
      * @param convertView ScrapView that will be recycled
-     * @param parent
-     * @return
+     * @param parent View group parent
+     * @return View representing a row in the list
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -70,7 +67,7 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
         // Fill the field of the view with the desired data.
         ViewHolder holder = (ViewHolder)convertView.getTag();
         holder.titleView.setText(articles.get(position).getTitle());
-        holder.dateView.setText(articles.get(position).getDate());
+        holder.dateView.setText(articles.get(position).getDate().toString());
 
         return convertView;
     }
@@ -78,10 +75,10 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
 
     /**
      * Add another article object to the resource data.
-     * @param article List of objects with the relevant data to be displayed.
+     * @param articleModel List of objects with the relevant data to be displayed.
      */
     @Override
-    public void add(Article article) {
-        super.add(article);
+    public void add(Article articleModel) {
+        super.add(articleModel);
     }
 }

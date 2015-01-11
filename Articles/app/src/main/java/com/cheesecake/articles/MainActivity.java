@@ -28,6 +28,10 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
     // Custom adapter for showing articles information.
     private ArticlesAdapter articlesAdapter;
 
+    // Application object.
+    protected MyApplication application;
+
+
     /*
         Effect for showing the modal dialog window with some article content.
         More info in: https://github.com/sd6352051/NiftyDialogEffects.
@@ -41,12 +45,14 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // List of dummy articles.
-        final ArrayList<Article> articlesList = new ArrayList<Article>();
-        articlesList.add(new Article("Article 1", "10/01/2015"));
-        articlesList.add(new Article("Article 2", "11/01/2015"));
-        articlesList.add(new Article("Article 3", "12/01/2015"));
-        articlesList.add(new Article("Article 4", "13/01/2015"));
+        // Get the application instance.
+        application = (MyApplication)getApplication();
+
+        // Get the cache instance.
+        final Cache cache = Cache.getSharedInstance();
+
+        // List of articles.
+        final ArrayList<Article> articlesList = new ArrayList<>();
 
         articlesAdapter = new ArticlesAdapter(this, articlesList);
 
@@ -66,11 +72,18 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        articlesAdapter.add(articlesList.get(0));
-                        articlesAdapter.add(articlesList.get(1));
-                        articlesAdapter.add(articlesList.get(2));
-                        articlesAdapter.add(articlesList.get(3));
 
+                        // If the articles have been successfully got from the web...
+                        if(cache.getArticlesCache().size() > 0) {
+                            for(Article article : cache.getArticlesCache()) {
+                                articlesList.add(article);
+                            }
+                        } else {
+                            // Try to get the content from the database.
+                        }
+
+                        // Adds the articles list to the adapter.
+                        articlesAdapter.addAll(articlesList);
                         // Set the adapter to the SuperListview.
                         mListArticles.setAdapter(articlesAdapter);
                     }
@@ -91,15 +104,6 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
     private void configSuperListview() {
         // Setting the refresh listener will enable the refresh progressbar.
         mListArticles.setRefreshListener(this);
-
-        // TODO: Find out why it's not working.
-        /*
-        // Set the colors which will appear when the list is been reloaded.
-        mListArticles.setRefreshingColor(android.R.color.holo_blue_bright,
-                                         android.R.color.holo_blue_light,
-                                         android.R.color.holo_blue_dark,
-                                         android.R.color.darker_gray);
-        */
 
         // The 2nd parameter is true if you want SuperListView to automatically
         // delete the item from the listview or false if you don't.
@@ -169,8 +173,6 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
     }
 
 
-
-
     /**
      * Method to invoke the modal screen.
      * @param article The article in the position clicked.
@@ -182,7 +184,7 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
                 .withTitle(article.getTitle())
                 .withTitleColor("#FFFFFF")
                 .withDividerColor("#11000000")
-                .withMessage(article.getDate())
+                .withMessage(article.getDate().toString())
                 .withMessageColor("#FFFFFFFF")
                 .withDialogColor("#FF287AA9")
                 .isCancelableOnTouchOutside(true)
