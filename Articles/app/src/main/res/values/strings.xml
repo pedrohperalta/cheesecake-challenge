@@ -4,5 +4,9 @@
     <string name="app_name">Articles</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="sort_by_title">Sort by title</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_website">Sort by website</string>
+    <string name="sort_by_authors">Sort by authors</string>
 
 </resources>

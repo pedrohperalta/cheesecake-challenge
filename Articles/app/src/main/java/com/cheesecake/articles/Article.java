@@ -2,6 +2,7 @@ package com.cheesecake.articles;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -84,4 +85,60 @@ public class Article {
     public void setDate(Date date) {
         this.date = date;
     }
+
+
+    /**
+     * Overrides the compare method of Comparator for sorting articles by website.
+     */
+    public static Comparator<Article> articleWebsiteComparator = new Comparator<Article>() {
+        @Override
+        public int compare(Article firstArticle, Article secondArticle) {
+            String firstArticleWebsite  = firstArticle.getWebsite();
+            String secondArticleWebsite = secondArticle.getWebsite();
+
+            return firstArticleWebsite.compareTo(secondArticleWebsite);
+        }
+    };
+
+
+    /**
+     * Overrides the compare method of Comparator for sorting articles by authors.
+     */
+    public static Comparator<Article> articleAuthorsComparator = new Comparator<Article>() {
+        @Override
+        public int compare(Article firstArticle, Article secondArticle) {
+            String firstArticleAuthors  = firstArticle.getAuthors();
+            String secondArticleAuthors = secondArticle.getAuthors();
+
+            return firstArticleAuthors.compareTo(secondArticleAuthors);
+        }
+    };
+
+
+    /**
+     * Overrides the compare method of Comparator for sorting articles by title.
+     */
+    public static Comparator<Article> articleTitleComparator = new Comparator<Article>() {
+        @Override
+        public int compare(Article firstArticle, Article secondArticle) {
+            String firstArticleTitle  = firstArticle.getTitle();
+            String secondArticleTitle = secondArticle.getTitle();
+
+            return firstArticleTitle.compareTo(secondArticleTitle);
+        }
+    };
+
+
+    /**
+     * Overrides the compare method of Comparator for sorting articles by date.
+     */
+    public static Comparator<Article> articleDateComparator = new Comparator<Article>() {
+        @Override
+        public int compare(Article firstArticle, Article secondArticle) {
+            Date firstArticleDate  = firstArticle.getDate();
+            Date secondArticleDate = secondArticle.getDate();
+
+            return firstArticleDate.compareTo(secondArticleDate);
+        }
+    };
 }

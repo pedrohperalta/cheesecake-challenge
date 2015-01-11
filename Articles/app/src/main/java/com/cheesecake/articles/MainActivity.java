@@ -137,6 +137,11 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
     }
 
 
+    /**
+     * Methos to deal with the menu button click.
+     * @param item Item chose from the menu
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -144,10 +149,8 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        // Tells the adapter to sort its data sorce liste based on the user choice.
+        articlesAdapter.sortList(id);
 
         return super.onOptionsItemSelected(item);
     }

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Pedro Henrique on 10/01/2015.
@@ -80,5 +81,38 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
     @Override
     public void add(Article articleModel) {
         super.add(articleModel);
+        notifyDataSetChanged();
+    }
+
+
+    /**
+     * Sort the list based on the user's choice.
+     * @param choice Indicates the tye of sorting.
+     */
+    public void sortList(int choice) {
+
+        switch (choice) {
+            // Sort articles by source website.
+            case R.id.sort_by_website:
+                Collections.sort(articles, Article.articleWebsiteComparator);
+                break;
+
+            // Sort articles by authors.
+            case R.id.sort_by_authors:
+                Collections.sort(articles, Article.articleAuthorsComparator);
+                break;
+
+            // Sort articles by title.
+            case R.id.sort_by_title:
+                Collections.sort(articles, Article.articleTitleComparator);
+                break;
+
+            // Sort articles by publish date.
+            case R.id.sort_by_date:
+                Collections.sort(articles, Article.articleDateComparator);
+                break;
+        }
+
+        notifyDataSetChanged();
     }
 }
