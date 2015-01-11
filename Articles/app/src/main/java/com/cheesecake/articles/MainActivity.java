@@ -6,17 +6,20 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.quentindommerc.superlistview.OnMoreListener;
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.quentindommerc.superlistview.SuperListview;
 import com.quentindommerc.superlistview.SwipeDismissListViewTouchListener;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener  {
+public class MainActivity extends ActionBarActivity implements SwipeRefreshLayout.OnRefreshListener  {
 
     // Github library that makes listview easier to use.
     // More info in: https://github.com/dommerq/SuperListview
@@ -24,6 +27,12 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
 
     // Custom adapter for showing articles information.
     private ArticlesAdapter articlesAdapter;
+
+    /*
+        Effect for showing the modal dialog window with some article content.
+        More info in: https://github.com/sd6352051/NiftyDialogEffects.
+     */
+    private Effectstype effect;
 
 
     @SuppressWarnings("ResourceAsColor")
@@ -70,7 +79,16 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
         });
 
         thread.start();
+        configSuperListview();
 
+        effect = Effectstype.Fliph;
+    }
+
+
+    /**
+     * Sets up the working parameters for the list.
+     */
+    private void configSuperListview() {
         // Setting the refresh listener will enable the refresh progressbar.
         mListArticles.setRefreshListener(this);
 
@@ -83,10 +101,8 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
                                          android.R.color.darker_gray);
         */
 
-
-        // LoadMore triggered when the list reaches the last item (1)
-        // mListArticles.setupMoreListener(this, 1);
-
+        // The 2nd parameter is true if you want SuperListView to automatically
+        // delete the item from the listview or false if you don't.
         mListArticles.setupSwipeToDismiss(new SwipeDismissListViewTouchListener.DismissCallbacks() {
             @Override
             public boolean canDismiss(int position) {
@@ -97,6 +113,15 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
             public void onDismiss(ListView listView, int[] reverseSortedPositions) {
             }
         }, true);
+
+        // Configures the listener for the click event.
+        mListArticles.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Article article = (Article)parent.getItemAtPosition(position);
+                dialogShow(article);
+            }
+        });
     }
 
 
@@ -143,6 +168,27 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
         }, 2000);
     }
 
-    @Override
-    public void onMoreAsked(int numberOfItems, int numberBeforeMore, int currentItemPos) { }
+
+
+
+    /**
+     * Method to invoke the modal screen.
+     * @param article The article in the position clicked.
+     */
+    public void dialogShow(Article article) {
+        NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
+
+        dialogBuilder
+                .withTitle(article.getTitle())
+                .withTitleColor("#FFFFFF")
+                .withDividerColor("#11000000")
+                .withMessage(article.getDate())
+                .withMessageColor("#FFFFFFFF")
+                .withDialogColor("#FF287AA9")
+                .isCancelableOnTouchOutside(true)
+                .withDuration(400)
+                .withEffect(effect)
+                .setCustomView(R.layout.article_detail, this.getApplicationContext())
+                .show();
+    }
 }

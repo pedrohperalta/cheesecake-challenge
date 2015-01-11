@@ -7,6 +7,8 @@ public class Article {
 
     private String title;
     private String date;
+    private String content;
+    private String author;
 
     /**
      * Represents an article object
@@ -32,5 +34,21 @@ public class Article {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }
