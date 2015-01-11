@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 /**
  * Created by Pedro Henrique on 10/01/2015.
@@ -26,7 +28,9 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
      */
     private static class ViewHolder {
         public TextView titleView;
+        public TextView authorsView;
         public TextView dateView;
+        public TextView websiteView;
     }
 
 
@@ -60,15 +64,24 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
             // Configure the view holder
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.titleView = (TextView)convertView.findViewById(R.id.article_title);
+            viewHolder.authorsView = (TextView)convertView.findViewById(R.id.article_authors);
             viewHolder.dateView  = (TextView)convertView.findViewById(R.id.article_date);
+            viewHolder.websiteView  = (TextView)convertView.findViewById(R.id.article_website);
 
             convertView.setTag(viewHolder);
         }
 
+        // Convert the Date to String given the format below.
+        SimpleDateFormat  dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date date = articles.get(position).getDate();
+        String dateText = dateFormat.format(date);
+
         // Fill the field of the view with the desired data.
         ViewHolder holder = (ViewHolder)convertView.getTag();
         holder.titleView.setText(articles.get(position).getTitle());
-        holder.dateView.setText(articles.get(position).getDate().toString());
+        holder.authorsView.setText("Written by: " + articles.get(position).getAuthors());
+        holder.dateView.setText(dateText);
+        holder.websiteView.setText("Source: " + articles.get(position).getWebsite());
 
         return convertView;
     }

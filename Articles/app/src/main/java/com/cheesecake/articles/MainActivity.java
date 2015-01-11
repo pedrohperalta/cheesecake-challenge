@@ -184,10 +184,10 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
         NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
 
         dialogBuilder
-                .withTitle(article.getTitle())
+                .withTitle(article.getAuthors())
                 .withTitleColor("#FFFFFF")
                 .withDividerColor("#11000000")
-                .withMessage(article.getDate().toString())
+                .withMessage(article.getContent())
                 .withMessageColor("#FFFFFFFF")
                 .withDialogColor("#FF287AA9")
                 .isCancelableOnTouchOutside(true)

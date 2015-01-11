@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
@@ -10,17 +11,46 @@
         android:paddingTop="20dp"
         android:paddingBottom="5dp"
         android:text="@+id/label"
-        android:textSize="20sp" >
+        android:textSize="18sp" >
     </TextView>
 
     <TextView
-        android:id="@+id/article_date"
+        android:id="@+id/article_authors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
-        android:paddingBottom="20dp"
+        android:paddingBottom="5dp"
         android:text="@+id/label"
         android:textSize="16sp" >
     </TextView>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="5dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/article_website"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:text="@+id/label"
+            android:textSize="16sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/article_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@+id/label"
+            android:textSize="16sp" >
+        </TextView>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

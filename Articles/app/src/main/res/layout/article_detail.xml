@@ -7,5 +7,5 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFFFF"
         android:layout_margin="15dp"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 </LinearLayout>
