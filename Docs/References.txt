@@ -1,0 +1,8 @@
+1 - Type-safe REST client for Android and Java by Square, Inc
+	https://github.com/square/retrofit
+
+2 - Custom library to implement a ListView
+	https://github.com/dommerq/SuperListview
+
+3 - Modal Dialog Effects
+	https://github.com/sd6352051/NiftyDialogEffects
