@@ -25,11 +25,17 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
     // More info in: https://github.com/dommerq/SuperListview
     private SuperListview mListArticles;
 
+    // List of articles.
+    ArrayList<Article> articlesList;
+
     // Custom adapter for showing articles information.
     private ArticlesAdapter articlesAdapter;
 
     // Application object.
     protected MyApplication application;
+
+    // Cache singleton instance.
+    protected Cache cache;
 
 
     /*
@@ -49,10 +55,9 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
         application = (MyApplication)getApplication();
 
         // Get the cache instance.
-        final Cache cache = Cache.getSharedInstance();
+        cache = Cache.getSharedInstance();
 
-        // List of articles.
-        final ArrayList<Article> articlesList = new ArrayList<>();
+        articlesList = new ArrayList<>();
 
         articlesAdapter = new ArticlesAdapter(this, articlesList);
 
@@ -63,25 +68,31 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                // Number of times the list will try to retrieve data from the cache.
+                int attempts = 10;
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                while(attempts > 0) {
+                    // Waits for a second in order to give the Api time to get the JSON array.
+                    try {
+                        Thread.sleep(1000);
 
                         // If the articles have been successfully got from the web...
                         if(cache.getArticlesCache().size() > 0) {
                             for(Article article : cache.getArticlesCache()) {
                                 articlesList.add(article);
                             }
+                            break;
                         } else {
-                            // Try to get the content from the database.
+                            attempts--;
                         }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
 
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
                         // Adds the articles list to the adapter.
                         articlesAdapter.addAll(articlesList);
                         // Set the adapter to the SuperListview.
@@ -161,16 +172,15 @@ public class MainActivity extends ActionBarActivity implements SwipeRefreshLayou
      */
     @Override
     public void onRefresh() {
-        Toast.makeText(this, "Refresh", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                // TODO
-                // Request the articles from the url to refresh them just in case they have changed.
-
-                // For now, the swype down action only clears the articles list.
-                articlesAdapter.clear();
+                if(cache.getArticlesCache().size() > 0) {
+                    articlesAdapter.clear();
+                    articlesAdapter.addAll(cache.getArticlesCache());
+                }
             }
         }, 2000);
     }
